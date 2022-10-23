@@ -1,0 +1,31 @@
+digraph {
+	0 [label=BracketRegex]
+	1 [label=BaseRegex]
+	0 -> 1
+	2 [label=s]
+	1 -> 2
+	3 [label=BracketRegex]
+	0 -> 3
+	4 [label="StarRegex [3]"]
+	3 -> 4
+	5 [label=BaseRegex]
+	4 -> 5
+	6 [label=a]
+	5 -> 6
+	7 [label=BaseRegex]
+	3 -> 7
+	8 [label=b]
+	7 -> 8
+	9 [label="StarRegex [1]"]
+	0 -> 9
+	10 [label=BaseRegex]
+	9 -> 10
+	11 [label=b]
+	10 -> 11
+	12 [label="StarRegex [7]"]
+	0 -> 12
+	13 [label=BaseRegex]
+	12 -> 13
+	14 [label=f]
+	13 -> 14
+}
