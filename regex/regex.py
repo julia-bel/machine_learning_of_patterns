@@ -84,6 +84,50 @@ class BracketRegex(NodeRegex):
         return graph
 
 
+class AlternativeRegex(NodeRegex):
+    def __init__(self, value: List[Regex]):
+        super().__init__(value)
+
+    def unpack(self):
+        pass
+
+    def starts_with(self, text: str) -> Iterator[int]:
+        for regex in self.value:
+            for i in regex.starts_with(text):
+                yield i
+
+    def to_nfa(self, last_nfa: Optional[NFA] = None) -> NFA:
+        nfas = [regex.to_nfa() for regex in self.value]
+        start = Node() if last_nfa is None else last_nfa.final.pop()
+        final = Node()
+        for nfa_branch in nfas:
+            start.add_edge(EPSILON, nfa_branch.start)
+            for branch_final in nfa_branch.final:
+                branch_final.add_edge(EPSILON, final)
+        if last_nfa is None:
+            nfa = NFA(start, final)
+        else:
+            nfa = NFA(last_nfa.start, final)
+            nfa.add(start, *last_nfa.inner)
+        for nfa_branch in nfas:
+            nfa.add(nfa_branch.start, *nfa_branch.inner, *nfa_branch.final)
+        return nfa
+
+    def plot(self,
+             parent: Optional[str] = None,
+             graph: Digraph = Digraph(),
+             name_generator: Optional[Iterator[str]] = None) -> Digraph:
+        if name_generator is None:
+            name_generator = key_generator()
+        name = next(name_generator)
+        graph.node(name, self.__class__.__name__)
+        if parent is not None:
+            graph.edge(parent, name)
+        for v in self.value:
+            v.plot(name, graph, name_generator)
+        return graph
+
+
 class StarRegex(NodeRegex):
     def __init__(self, value: Regex, height: int):
         self.height = height

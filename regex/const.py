@@ -1,7 +1,7 @@
 R_PAR = ")"
-R_PAR = ")"
 L_PAR = "("
 KLEENE_STAR = "*"
 SPACE = " "
 DASH = "-"
+ALTERNATIVE = "|"
 EPSILON = "ε"

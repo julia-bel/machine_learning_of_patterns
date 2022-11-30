@@ -1,5 +1,5 @@
-from .regex import BaseRegex, StarRegex, Regex, BracketRegex
-from .const import L_PAR, R_PAR, KLEENE_STAR
+from .regex import BaseRegex, StarRegex, Regex, BracketRegex, AlternativeRegex
+from .const import L_PAR, R_PAR, KLEENE_STAR, ALTERNATIVE
 from typing import List
 
 
@@ -27,6 +27,7 @@ class RegexParser:
 
         parsed = []
         curr_regex = ""
+        alternative = 0
         while len(self.value):
             char = self.next_char()
             if char == L_PAR:
@@ -38,7 +39,19 @@ class RegexParser:
                 self.parenthesis_count -= 1
                 assert self.parenthesis_count > -1, "invalid parenthesis"
                 add2parsed(curr_regex)
+                if alternative:
+                    assert len(parsed) > alternative, "invalid alternative expression"
+                    if len(parsed) != alternative + 1:
+                        parsed = parsed[:alternative] + [BracketRegex(parsed[alternative:])]
+                    return AlternativeRegex(parsed)
                 return BracketRegex(parsed)
+            elif char == ALTERNATIVE:
+                add2parsed(curr_regex)
+                curr_regex = ""
+                assert len(parsed) > alternative, "invalid alternative expression"
+                if len(parsed) != alternative + 1:
+                    parsed = parsed[:alternative] + [BracketRegex(parsed[alternative:])]
+                alternative += 1
             elif char == KLEENE_STAR:
                 if curr_regex:
                     add2parsed(curr_regex[:-1])
@@ -51,4 +64,9 @@ class RegexParser:
                 curr_regex += char
         assert self.parenthesis_count == 0, "invalid parenthesis"
         add2parsed(curr_regex)
+        if alternative:
+            assert len(parsed) > alternative, "invalid alternative expression"
+            if len(parsed) != alternative + 1:
+                parsed = parsed[:alternative] + [BracketRegex(parsed[alternative:])]
+            return AlternativeRegex(parsed)
         return parsed[0] if len(parsed) == 1 else BracketRegex(parsed)
