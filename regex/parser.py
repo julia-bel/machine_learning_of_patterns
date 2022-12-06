@@ -1,6 +1,7 @@
-from .regex import BaseRegex, StarRegex, Regex, BracketRegex, AlternativeRegex
-from .const import L_PAR, R_PAR, KLEENE_STAR, ALTERNATIVE
 from typing import List
+
+from regex.const import L_PAR, R_PAR, KLEENE_STAR, ALTERNATIVE
+from regex.regex import BaseRegex, StarRegex, Regex, BracketRegex, AlternativeRegex
 
 
 class RegexParser:

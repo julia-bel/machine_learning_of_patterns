@@ -1,13 +1,15 @@
 from __future__ import annotations
-from typing import List, Iterator, Optional
+
 from collections import OrderedDict
+from typing import List, Iterator, Optional
+
 from graphviz import Digraph
 
-from .abstract_regex import Regex, NodeRegex
-from utils.utils import key_generator
-from automaton.automaton import NFA
 from automaton.abstract_automaton import Node
-from .const import EPSILON
+from automaton.automaton import NFA
+from regex.abstract_regex import Regex, NodeRegex
+from regex.const import EPSILON
+from utils.utils import key_generator
 
 
 class BaseRegex(Regex):

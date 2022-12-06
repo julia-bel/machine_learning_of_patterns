@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 from typing import List, Iterator
 
-from .abstract_pattern import Variable, Pattern
+from pattern.abstract_pattern import Variable, Pattern
 
 
 class NEVariable(Variable):

@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 from typing import Optional, List, Tuple, Any, Set
 
+from automaton.abstract_automaton import Automaton, Node
 from regex.const import EPSILON
-from .abstract_automaton import Automaton, Node
 
 
 class DFA(Automaton):
