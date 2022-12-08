@@ -1,251 +1,67 @@
 digraph {
 	0 [label=BracketRegex]
-	1 [label=BaseRegex]
+	1 [label="StarRegex [1000]"]
 	0 -> 1
-	2 [label=M]
+	2 [label=BracketRegex]
 	1 -> 2
-	3 [label=AlternativeRegex]
-	0 -> 3
+	3 [label="StarRegex [1000]"]
+	2 -> 3
 	4 [label=BracketRegex]
 	3 -> 4
-	5 [label=BaseRegex]
+	5 [label="StarRegex [1000]"]
 	4 -> 5
-	6 [label=G]
+	6 [label=BracketRegex]
 	5 -> 6
-	7 [label=AlternativeRegex]
-	4 -> 7
+	7 [label="StarRegex [1000]"]
+	6 -> 7
 	8 [label=BracketRegex]
 	7 -> 8
 	9 [label=BaseRegex]
 	8 -> 9
-	10 [label=B]
+	10 [label=a]
 	9 -> 10
-	11 [label=BracketRegex]
-	8 -> 11
-	12 [label=BaseRegex]
+	11 [label=BaseRegex]
+	6 -> 11
+	12 [label=a]
 	11 -> 12
-	13 [label=G]
-	12 -> 13
-	14 [label=BaseRegex]
-	7 -> 14
-	15 [label=VxT]
-	14 -> 15
-	16 [label=BracketRegex]
-	3 -> 16
-	17 [label=BaseRegex]
-	16 -> 17
-	18 [label=Fw]
+	13 [label=BaseRegex]
+	4 -> 13
+	14 [label=a]
+	13 -> 14
+	15 [label=BaseRegex]
+	2 -> 15
+	16 [label=a]
+	15 -> 16
+	17 [label="StarRegex [1000]"]
+	0 -> 17
+	18 [label=BracketRegex]
 	17 -> 18
-	19 [label=BracketRegex]
-	16 -> 19
-	20 [label=BaseRegex]
+	19 [label="StarRegex [1000]"]
+	18 -> 19
+	20 [label=BracketRegex]
 	19 -> 20
-	21 [label=t]
+	21 [label="StarRegex [1000]"]
 	20 -> 21
-	22 [label="StarRegex [100]"]
-	19 -> 22
+	22 [label=BracketRegex]
+	21 -> 22
 	23 [label=BaseRegex]
 	22 -> 23
-	24 [label=U]
+	24 [label=b]
 	23 -> 24
-	25 [label="StarRegex [100]"]
-	19 -> 25
-	26 [label=BaseRegex]
-	25 -> 26
-	27 [label=R]
-	26 -> 27
-	28 [label="StarRegex [100]"]
-	19 -> 28
-	29 [label=BracketRegex]
-	28 -> 29
-	30 [label=BaseRegex]
-	29 -> 30
-	31 [label=x]
-	30 -> 31
-	32 [label="StarRegex [100]"]
-	19 -> 32
-	33 [label=BracketRegex]
-	32 -> 33
-	34 [label="StarRegex [100]"]
-	33 -> 34
-	35 [label=BracketRegex]
-	34 -> 35
-	36 [label=BaseRegex]
-	35 -> 36
-	37 [label=i]
-	36 -> 37
-	38 [label=BracketRegex]
-	35 -> 38
-	39 [label=AlternativeRegex]
-	38 -> 39
-	40 [label=BaseRegex]
-	39 -> 40
-	41 [label=bJW]
-	40 -> 41
-	42 [label=BaseRegex]
-	39 -> 42
-	43 [label=o]
-	42 -> 43
-	44 [label=BracketRegex]
-	39 -> 44
-	45 [label=BaseRegex]
-	44 -> 45
-	46 [label=jq]
-	45 -> 46
-	0 [label=BracketRegex]
-	1 [label="StarRegex [100]"]
-	0 -> 1
-	2 [label=BracketRegex]
-	1 -> 2
-	3 [label="StarRegex [100]"]
-	2 -> 3
-	4 [label=BracketRegex]
-	3 -> 4
-	5 [label=BaseRegex]
-	4 -> 5
-	6 [label=m]
-	5 -> 6
-	7 [label=BracketRegex]
-	4 -> 7
-	8 [label=BaseRegex]
-	7 -> 8
-	9 [label=b]
-	8 -> 9
-	10 [label=AlternativeRegex]
-	7 -> 10
-	11 [label=BaseRegex]
-	10 -> 11
-	12 [label=t]
-	11 -> 12
-	13 [label=AlternativeRegex]
-	10 -> 13
-	14 [label=BaseRegex]
-	13 -> 14
-	15 [label=SE]
-	14 -> 15
-	16 [label=AlternativeRegex]
-	13 -> 16
-	17 [label=BaseRegex]
-	16 -> 17
-	18 [label=x]
-	17 -> 18
-	19 [label=BracketRegex]
-	16 -> 19
-	20 [label=AlternativeRegex]
-	19 -> 20
-	21 [label=BracketRegex]
-	20 -> 21
-	22 [label=BaseRegex]
-	21 -> 22
-	23 [label=X]
-	22 -> 23
-	24 [label="StarRegex [100]"]
-	21 -> 24
 	25 [label=BaseRegex]
-	24 -> 25
-	26 [label=s]
+	20 -> 25
+	26 [label=b]
 	25 -> 26
-	27 [label=AlternativeRegex]
-	20 -> 27
-	28 [label=BaseRegex]
+	27 [label=BaseRegex]
+	18 -> 27
+	28 [label=b]
 	27 -> 28
-	29 [label=r]
-	28 -> 29
-	30 [label=BracketRegex]
-	27 -> 30
+	29 [label=BaseRegex]
+	0 -> 29
+	30 [label=a]
+	29 -> 30
 	31 [label=BaseRegex]
-	30 -> 31
-	32 [label=t]
+	0 -> 31
+	32 [label=b]
 	31 -> 32
-	33 [label=BracketRegex]
-	30 -> 33
-	34 [label="StarRegex [100]"]
-	33 -> 34
-	35 [label=BracketRegex]
-	34 -> 35
-	36 [label=AlternativeRegex]
-	35 -> 36
-	37 [label=BracketRegex]
-	36 -> 37
-	38 [label=BaseRegex]
-	37 -> 38
-	39 [label=P]
-	38 -> 39
-	40 [label="StarRegex [100]"]
-	37 -> 40
-	41 [label=AlternativeRegex]
-	40 -> 41
-	42 [label=BracketRegex]
-	41 -> 42
-	43 [label=BracketRegex]
-	42 -> 43
-	44 [label=BaseRegex]
-	43 -> 44
-	45 [label=g]
-	44 -> 45
-	46 [label=BaseRegex]
-	42 -> 46
-	47 [label=x]
-	46 -> 47
-	48 [label=BaseRegex]
-	41 -> 48
-	49 [label=s]
-	48 -> 49
-	50 [label=BracketRegex]
-	36 -> 50
-	51 [label=BaseRegex]
-	50 -> 51
-	52 [label=EE]
-	51 -> 52
-	53 [label=BracketRegex]
-	50 -> 53
-	54 [label=BaseRegex]
-	53 -> 54
-	55 [label=G]
-	54 -> 55
-	56 [label=AlternativeRegex]
-	53 -> 56
-	57 [label=BaseRegex]
-	56 -> 57
-	58 [label=x]
-	57 -> 58
-	59 [label=BaseRegex]
-	56 -> 59
-	60 [label=XP]
-	59 -> 60
-	0 [label=BracketRegex]
-	1 [label="StarRegex [100]"]
-	0 -> 1
-	2 [label=BaseRegex]
-	1 -> 2
-	3 [label=c]
-	2 -> 3
-	4 [label=BaseRegex]
-	0 -> 4
-	5 [label=W]
-	4 -> 5
-	0 [label=BracketRegex]
-	1 [label=BaseRegex]
-	0 -> 1
-	2 [label=i]
-	1 -> 2
-	3 [label=BracketRegex]
-	0 -> 3
-	4 [label="StarRegex [100]"]
-	3 -> 4
-	5 [label=BaseRegex]
-	4 -> 5
-	6 [label=P]
-	5 -> 6
-	0 [label=BracketRegex]
-	1 [label="StarRegex [100]"]
-	0 -> 1
-	2 [label=BaseRegex]
-	1 -> 2
-	3 [label=K]
-	2 -> 3
-	4 [label=BaseRegex]
-	0 -> 4
-	5 [label=F]
-	4 -> 5
 }

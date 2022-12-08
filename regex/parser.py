@@ -23,8 +23,9 @@ class RegexParser:
     def parse(self) -> Regex:
 
         def add2parsed(regex: str):
+            nonlocal parsed
             if regex:
-                parsed.append(BaseRegex(regex))
+                parsed += [BaseRegex(char) for char in regex]
 
         parsed = []
         curr_regex = ""
