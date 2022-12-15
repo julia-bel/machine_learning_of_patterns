@@ -58,7 +58,7 @@ class Automaton(ABC):
         while stack:
             node = stack.pop()
             name = used[node]
-            graph.node(used[node], shape='doublecircle' if node in self.final else 'circle')
+            graph.node(used[node], shape="doublecircle" if node in self.final else "circle")
             for value, children in node.out.items():
                 for child in children:
                     if child in used:

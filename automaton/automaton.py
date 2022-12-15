@@ -83,7 +83,7 @@ class NFA(Automaton):
                     used.append(closure)
                     stack.append(closure)
             new_nodes.append((cur_node, Node(map_closure)))
-        assert len(new_nodes) == len(used), f'{len(new_nodes), len(used)}'
+        assert len(new_nodes) == len(used), f"{len(new_nodes), len(used)}"
         return self.__rename_dfa(start, final, new_nodes)
 
     def match(self, word: str) -> bool:
