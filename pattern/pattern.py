@@ -24,6 +24,23 @@ class NEPattern(Pattern):
     def __init__(self, value: List[str | Variable]):
         super().__init__(value)
 
+    def shape(self) -> List[int | str]:
+        result = []
+        vars = {}
+        i = 1
+        for value in self.value:
+            if type(value) is Variable:
+                prev_i = vars[str(value)]
+                if prev_i is None:
+                    vars[str(value)] = i
+                    result.append(i)
+                    i += 1
+                else:
+                    result.append(prev_i)
+            else:
+                result.append(value)
+        return result
+
     def slice_len(self, start: int = 0) -> int:
         length = 0
         for value in self.value[start:]:

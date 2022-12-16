@@ -29,7 +29,14 @@ class Pattern(ABC):
         return len(self.value)
 
     def __str__(self) -> str:
-        return ''.join([v if type(v) is str else v.name for v in self.value])
+        return "".join([v if type(v) is str else v.name for v in self.value])
+
+    def __eq__(self, other: Pattern) -> bool:
+        return self.shape() == other.shape()
+
+    @abstractmethod
+    def shape(self) -> List[int | str]:
+        pass
 
     @abstractmethod
     def match(self, word: str) -> bool:

@@ -77,8 +77,8 @@ class RegexGenerator:
             self.generate_simple_regex()
 
     # <simple-regex> ::= <lbr><regex><rbr><unary>? | letter <unary>?
-    def generate_simple_regex(self):
-        if random.randint(0, 1):
+    def generate_simple_regex(self, br_prob: int = 7):
+        if random.randint(0, 10) > br_prob:
             self.cur_regex += self.random_char()
             if self.cur_star_num:
                 star_chance = self.cur_regex_length // self.cur_star_num
