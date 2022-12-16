@@ -1,5 +1,6 @@
 import random
 import string
+from typing import Optional, List
 
 """
 GRAMMAR:
@@ -20,15 +21,22 @@ class RegexGenerator:
     cur_nesting = 0
     cur_regex = ""
 
-    def __init__(self, regex_length: int, star_num: int, star_nesting: int, alphabet_size: int):
+    def __init__(
+            self, regex_length: int,
+            star_num: int, star_nesting: int,
+            alphabet_size: int, alphabet: Optional[List[str]] = None):
         assert regex_length >= 1, "regex length must be > 0"
         self.regex_length = regex_length
         self.star_nesting = 0 if star_nesting < 0 else star_nesting
         self.star_num = 0 if star_num < 0 else star_num
-        if alphabet_size < 1:
-            alphabet_size = 1
-        self.alphabet = list(string.ascii_lowercase)[:alphabet_size] + \
-                        list(string.ascii_uppercase)[:alphabet_size]
+        if alphabet is None:
+            if alphabet_size < 1:
+                alphabet_size = 1
+            self.alphabet = list(string.ascii_lowercase)[:alphabet_size] + \
+                            list(string.ascii_uppercase)[:alphabet_size]
+        else:
+            print('HERE')
+            self.alphabet = alphabet
 
     def change_seed(self, step: int = 1):
         self.seed += step
