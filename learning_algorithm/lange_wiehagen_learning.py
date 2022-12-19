@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import Optional, List
 
 from pattern.pattern import NEPattern, NEVariable
@@ -16,7 +15,7 @@ def unite(pattern: NEPattern, word: str) -> NEPattern:
     result = []
     n = 0
     for i, w, p in enumerate(zip(word, pattern.value)):
-        if w == str(p):  # TODO: check
+        if w == str(p):
             result.append(w)
         else:
             prev_var = find_var(i, w, p)

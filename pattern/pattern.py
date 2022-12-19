@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from typing import List, Iterator
 
 from pattern.abstract_pattern import Variable, Pattern

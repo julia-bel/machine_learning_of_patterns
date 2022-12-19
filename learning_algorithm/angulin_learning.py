@@ -127,7 +127,7 @@ def generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
 
 def find_min_pattern(patterns: List[NEPattern]) -> Optional[NEPattern]:
     for p1 in patterns:
-        if all([p2.include(p1) for p2 in patterns if p1 != p2]):
+        if all([p2.include(p1) for p2 in patterns]):
             return p1
 
 
@@ -135,6 +135,4 @@ def angulin_algorithm(words: List[str], optimize: bool = False) -> Optional[NEPa
     min_length = min([len(word) for word in words])
     patterns = optimal_generate_rec_patterns(words, min_length) \
         if optimize else generate_rec_patterns(words, min_length)
-    max_length = max([len(pattern) for pattern in patterns])
-    max_patterns = [pattern for pattern in patterns if len(pattern) == max_length]
-    return find_min_pattern(max_patterns)
+    return find_min_pattern(patterns)

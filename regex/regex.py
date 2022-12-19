@@ -1,8 +1,6 @@
 from __future__ import annotations
-
 from collections import OrderedDict
 from typing import List, Iterator, Optional
-
 from graphviz import Digraph
 
 from automaton.abstract_automaton import Node
