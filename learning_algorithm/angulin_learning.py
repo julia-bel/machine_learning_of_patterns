@@ -10,11 +10,7 @@ def match_all(pattern: NEPattern, words: List[str]) -> bool:
 
 
 def get_alphabet(words: List[str]) -> List[str]:
-    chars = set()
-    for word in words:
-        for char in word:
-            chars.add(char)
-    return sorted(list(chars))
+    return sorted(list({char for word in words for char in word}))
 
 
 def optimal_generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
@@ -32,7 +28,7 @@ def optimal_generate_rec_patterns(words: List[str], length: int) -> List[NEPatte
                 vars.add(value)
 
     def generate_bisubs(
-            vars: List[NEPattern],
+            vars: List[NEVariable],
             const: bool = True) -> Iterator[NEPattern]:
         if const:
             for prod in product(alphabet, repeat=2):
@@ -43,13 +39,13 @@ def optimal_generate_rec_patterns(words: List[str], length: int) -> List[NEPatte
                 yield NEPattern([var, char])
         for prod in product(vars, repeat=2):
             yield NEPattern(list(prod))
-        yield NEPattern([NEVariable("x1"), NEVariable("x2")])
+        yield NEPattern([NEVariable(), NEVariable()])
 
     def generate_bipatterns(const: bool = False) -> Iterator[NEPattern]:
         if const:
             for prod in product(alphabet, repeat=2):
                 yield NEPattern(list(prod))
-        vars = [NEVariable("x1"), NEVariable("x2")]
+        vars = [NEVariable(), NEVariable()]
         for char in alphabet:
             yield NEPattern([char, vars[0]])
             yield NEPattern([vars[0], char])
@@ -65,11 +61,7 @@ def optimal_generate_rec_patterns(words: List[str], length: int) -> List[NEPatte
 
     alphabet = get_alphabet(words)
     bipatterns = generate_bipatterns()
-    rec_patterns = []
-    for pattern in bipatterns:
-        if match_all(pattern, words):
-            rec_patterns.append(pattern)
-
+    rec_patterns = [pattern for pattern in bipatterns if match_all(pattern, words)]
     used = []
     max_length = 2
     while len(rec_patterns):
@@ -94,9 +86,9 @@ def generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
             i = 1
             for value in pattern:
                 if type(value) is NEVariable:
-                    prev_i = vars[str(value)]
+                    prev_i = vars.get(value)
                     if prev_i is None:
-                        vars[str(value)] = i
+                        vars[value] = i
                         result.append(i)
                         i += 1
                     else:
@@ -106,7 +98,7 @@ def generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
             return tuple(result)
 
         var_subs = set()
-        vars = [NEVariable(f"x{i}") for i in range(length - 1)]
+        vars = [NEVariable() for _ in range(length - 1)]
         for pattern in product(alphabet + vars, repeat=len(alphabet) + len(vars)):
             sub = get_var_substitution(pattern)
             if sub not in var_subs:
@@ -122,7 +114,7 @@ def generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
                 result.append(pattern)
         if len(result):
             break
-    return result if len(result) else [NEPattern([NEVariable(f"x{i}") for i in range(length)])]
+    return result if len(result) else [NEPattern([NEVariable() for _ in range(length)])]
 
 
 def find_min_pattern(patterns: List[NEPattern]) -> Optional[NEPattern]:

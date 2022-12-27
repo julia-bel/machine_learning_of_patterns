@@ -1,38 +1,32 @@
 from __future__ import annotations
-from typing import List, Iterator
+from typing import List, Iterator, Optional
 
 from pattern.abstract_pattern import Variable, Pattern
 
 
 class NEVariable(Variable):
-    def __init__(self, name: str):
-        super().__init__(name)
+    def __init__(self, value: Optional[str] = None):
+        super().__init__(value)
 
-    def substitute(self, value: str):
+    def substitute(self, value: str | List[str]):
         assert len(value), "length of the value must be > 0"
-        self.value = value
-
-    def __len__(self) -> int:
-        return len(self.value) if self.value else 0
-
-    def __str__(self) -> str:
-        return "" if self.is_free() else self.value
+        self.value = value.split() if type(value) is str else value
 
 
 class NEPattern(Pattern):
     def __init__(self, value: List[str | Variable]):
         super().__init__(value)
 
-    def shape(self) -> List[int | str]:
+    def shape(self) -> List[str]:
         result = []
         vars = {}
         i = 1
         for value in self.value:
-            if type(value) is Variable:
-                prev_i = vars[str(value)]
+            if type(value) is NEVariable:
+                prev_i = vars.get(value)
                 if prev_i is None:
-                    vars[str(value)] = i
-                    result.append(i)
+                    vars[value] = f"x{i}"
+                    result.append(vars[value])
                     i += 1
                 else:
                     result.append(prev_i)
@@ -40,30 +34,35 @@ class NEPattern(Pattern):
                 result.append(value)
         return result
 
-    def slice_len(self, start: int = 0) -> int:
+    def slice_len(self, start: int = 0, end: int = -1) -> int:
         length = 0
-        for value in self.value[start:]:
+        for value in self.value[start:end]:
             l = len(value)
             length += l if l > 0 else 1
         return length
 
-    def is_alphabet_compatible(self, word: str, value_start: int = 0) -> bool:
+    def is_alphabet_compatible(self, word: str | List[str], value_start: int = 0) -> bool:
         word_tail = list(word)
         value_tail = self.value[value_start:]
         if len(word_tail) < self.slice_len(value_start):
             return False
         for value in value_tail:
-            if not word_tail:
+            if len(word_tail) == 0:
                 break
-            if type(value) is str or not value.is_free():
-                for char in str(value):
+            if type(value) is str:
+                if value in word_tail:
+                    word_tail.remove(value)
+                else:
+                    return False
+            elif not value.is_free():
+                for char in value.value:
                     if char in word_tail:
                         word_tail.remove(char)
                     else:
                         return False
         return True
 
-    def match(self, word: str) -> bool:
+    def match(self, word: str | List[str]) -> bool:
         if not self.is_alphabet_compatible(word):
             return False
 
@@ -89,27 +88,34 @@ class NEPattern(Pattern):
                     return iter_positions(i - 1)
             return -1
 
+        word = list(word)
         stack = []
         i = 0
         while i < len(self.value):
             value = self.value[i]
             start = stack[-1][0] if stack else 0
-            if type(value) is str or not value.is_free():
-                if word[start:].startswith(str(value)):
-                    stack.append([start + len(value), None])
+            if type(value) is str:
+                if word[start] == value:
+                    stack.append([start + 1, None])
                 else:
                     i = iter_positions(i - 1)
-            else:
+            elif value.is_free():
                 positions = get_free_positions(i, start)
                 try:
                     stack.append([next(positions), positions])
                 except StopIteration:
                     i = iter_positions(i - 1)
+            else:
+                if word[start:start + len(value)] == value.value:
+                    stack.append([start + len(value), None])
+                else:
+                    i = iter_positions(i - 1)
             if i < 0:
+                self.free()
                 return False
             i += 1
-        return True
+        self.free()
+        return stack[-1][0] == len(word)
 
     def include(self, pattern: NEPattern) -> bool:
-        assert len(self) == len(pattern), "invalid inclusion"
-        return self.match(str(pattern))
+        return self.match(pattern.shape())

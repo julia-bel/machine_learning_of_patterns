@@ -5,7 +5,7 @@ from pattern.pattern import NEPattern, NEVariable
 
 
 def unite(pattern: NEPattern, word: str) -> NEPattern:
-    assert len(NEPattern) == len(word), "incorrect components"
+    assert len(NEPattern) == len(word), "incorrect arguments"
 
     def find_var(i: int, w: str, p: str | NEVariable) -> Optional[NEVariable]:
         for j, prev_w, prev_p in enumerate(zip(word[:i], pattern.value[:i])):
@@ -13,28 +13,20 @@ def unite(pattern: NEPattern, word: str) -> NEPattern:
                 return result[j]
 
     result = []
-    n = 0
     for i, w, p in enumerate(zip(word, pattern.value)):
-        if w == str(p):
+        if w == p:
             result.append(w)
         else:
             prev_var = find_var(i, w, p)
-            if prev_var is not None:
-                result.append(prev_var)
-            else:
-                new_var = NEVariable(f"x{n}")
-                new_var.substitute(w)
-                result.append(new_var)
-                n += 1
+            result.append(prev_var if prev_var else NEVariable())
     return NEPattern(result)
 
 
 def LWA(words: List[str]) -> NEPattern:
-    pattern = words[0]
+    pattern = NEPattern(words[0].split())
     for word in words[1:]:
         if len(pattern) > len(word):
-            pattern = word
+            pattern = NEPattern(word.split())
         elif len(pattern) == len(word):
             pattern = unite(pattern, word)
-    return pattern if type(pattern) is NEPattern else NEPattern([pattern])
-
+    return pattern
