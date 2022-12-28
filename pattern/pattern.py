@@ -17,7 +17,7 @@ class NEPattern(Pattern):
     def __init__(self, value: List[str | Variable]):
         super().__init__(value)
 
-    def shape(self) -> List[str]:
+    def shape(self, var_id: str = "x") -> List[str]:
         result = []
         vars = {}
         i = 1
@@ -25,7 +25,7 @@ class NEPattern(Pattern):
             if type(value) is NEVariable:
                 prev_i = vars.get(value)
                 if prev_i is None:
-                    vars[value] = f"x{i}"
+                    vars[value] = var_id + str(i)
                     result.append(vars[value])
                     i += 1
                 else:
@@ -34,9 +34,9 @@ class NEPattern(Pattern):
                 result.append(value)
         return result
 
-    def slice_len(self, start: int = 0, end: int = -1) -> int:
+    def slice_len(self, start: int = 0) -> int:
         length = 0
-        for value in self.value[start:end]:
+        for value in self.value[start:]:
             l = len(value)
             length += l if l > 0 else 1
         return length
@@ -46,6 +46,7 @@ class NEPattern(Pattern):
         value_tail = self.value[value_start:]
         if len(word_tail) < self.slice_len(value_start):
             return False
+        contains_free = False
         for value in value_tail:
             if len(word_tail) == 0:
                 break
@@ -60,7 +61,9 @@ class NEPattern(Pattern):
                         word_tail.remove(char)
                     else:
                         return False
-        return True
+            elif not contains_free:
+                contains_free = True
+        return len(word_tail) == 0 or contains_free
 
     def match(self, word: str | List[str]) -> bool:
         if not self.is_alphabet_compatible(word):
@@ -70,7 +73,7 @@ class NEPattern(Pattern):
             var = self.value[var_i]
             for i in range(start + 1, len(word) + 1):
                 if not self.is_alphabet_compatible(word[i:], var_i + 1):
-                    break
+                    continue
                 var.substitute(word[start:i])
                 yield i
 

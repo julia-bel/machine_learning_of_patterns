@@ -1,19 +1,19 @@
 from __future__ import annotations
-from typing import List, Iterator, Optional, Tuple, Any
+from typing import List, Iterator, Optional
 from itertools import product
 
 from pattern.pattern import NEPattern, NEVariable
 
 
-def match_all(pattern: NEPattern, words: List[str]) -> bool:
+def match_all(pattern: NEPattern, words: List[str | List[str]]) -> bool:
     return all([pattern.match(word) for word in words])
 
 
-def get_alphabet(words: List[str]) -> List[str]:
+def get_alphabet(words: List[str | List[str]]) -> List[str]:
     return sorted(list({char for word in words for char in word}))
 
 
-def optimal_generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
+def optimal_generate_rec_patterns(words: List[str | List[str]], length: int) -> List[NEPattern]:
     def substitute_all(pattern: NEPattern, sub: NEPattern) -> Iterator[NEPattern]:
         vars = set()
         for i, value in enumerate(pattern.value):
@@ -78,32 +78,16 @@ def optimal_generate_rec_patterns(words: List[str], length: int) -> List[NEPatte
     return [p for p in used if len(p) == max_length]
 
 
-def generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
+def generate_rec_patterns(words: List[str | List[str]], length: int) -> List[NEPattern]:
     def generate_patterns(length: int) -> Iterator[NEPattern]:
-        def get_var_substitution(pattern: Any) -> Tuple:
-            result = []
-            vars = {}
-            i = 1
-            for value in pattern:
-                if type(value) is NEVariable:
-                    prev_i = vars.get(value)
-                    if prev_i is None:
-                        vars[value] = i
-                        result.append(i)
-                        i += 1
-                    else:
-                        result.append(prev_i)
-                else:
-                    result.append(0)
-            return tuple(result)
-
-        var_subs = set()
-        vars = [NEVariable() for _ in range(length - 1)]
-        for pattern in product(alphabet + vars, repeat=len(alphabet) + len(vars)):
-            sub = get_var_substitution(pattern)
-            if sub not in var_subs:
-                var_subs.add(sub)
-                yield NEPattern(list(pattern))
+        subs = set()
+        vars = [NEVariable() for _ in range(length)]
+        for sub in product(alphabet + vars, repeat=length):
+            pattern = NEPattern(list(sub))
+            sub = tuple(pattern.shape())
+            if sub not in subs:
+                subs.add(sub)
+                yield pattern
 
     result = []
     alphabet = get_alphabet(words)
@@ -114,16 +98,16 @@ def generate_rec_patterns(words: List[str], length: int) -> List[NEPattern]:
                 result.append(pattern)
         if len(result):
             break
-    return result if len(result) else [NEPattern([NEVariable() for _ in range(length)])]
+    return result
 
 
 def find_min_pattern(patterns: List[NEPattern]) -> Optional[NEPattern]:
     for p1 in patterns:
-        if all([p2.include(p1) for p2 in patterns]):
+        if all([not p1.include(p2) for p2 in patterns if p1 != p2]):
             return p1
 
 
-def angulin_algorithm(words: List[str], optimize: bool = False) -> Optional[NEPattern]:
+def angulin_algorithm(words: List[str | List[str]], optimize: bool = False) -> Optional[NEPattern]:
     min_length = min([len(word) for word in words])
     patterns = optimal_generate_rec_patterns(words, min_length) \
         if optimize else generate_rec_patterns(words, min_length)

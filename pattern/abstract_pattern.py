@@ -49,7 +49,7 @@ class Pattern(ABC):
 
     def free(self):
         for v in self.value:
-            if type(v) is Variable:
+            if type(v) is not str:
                 v.free()
 
     @abstractmethod
