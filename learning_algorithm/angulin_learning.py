@@ -17,7 +17,7 @@ def optimal_generate_rec_patterns(words: List[str | List[str]], length: int) -> 
     def substitute_all(pattern: NEPattern, sub: NEPattern) -> Iterator[NEPattern]:
         vars = set()
         for i, value in enumerate(pattern.value):
-            if type(value) is NEVariable and value not in vars:
+            if isinstance(value, NEVariable) and value not in vars:
                 new_pattern = []
                 for v in pattern.value:
                     if v == value:
@@ -52,12 +52,12 @@ def optimal_generate_rec_patterns(words: List[str | List[str]], length: int) -> 
         yield NEPattern(vars[:1] * 2)
         yield NEPattern(vars)
 
-    '''
+    """
         1) Check all patterns of length 2.
         2) Select all that recognize all the words.
         3) Generate possible substitutions of length 2 for some variable of the next test sample 
            and check only their results for word recognition.
-    '''
+    """
 
     alphabet = get_alphabet(words)
     bipatterns = generate_bipatterns()
@@ -66,7 +66,7 @@ def optimal_generate_rec_patterns(words: List[str | List[str]], length: int) -> 
     max_length = 2
     while len(rec_patterns):
         pattern = rec_patterns.pop()
-        bisubs = generate_bisubs([v for v in pattern.value if type(v) is NEVariable])
+        bisubs = generate_bisubs([v for v in pattern.value if isinstance(v, NEVariable)])
         for sub in bisubs:
             for new_pattern in substitute_all(pattern, sub):
                 if len(new_pattern) > length or new_pattern in rec_patterns or new_pattern in used:

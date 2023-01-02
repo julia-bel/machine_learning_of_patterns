@@ -1,8 +1,7 @@
 from __future__ import annotations
-from typing import Optional, Dict
+from typing import Optional, Dict, Iterator
 from abc import ABC, abstractmethod
 from graphviz import Digraph
-from typing import Iterator
 
 from utils.utils import key_generator
 

@@ -50,7 +50,7 @@ class BracketRegex(NodeRegex):
         self.unpack()
 
     def unpack(self):
-        while len(self.value) == 1 and type(self.value[0]) is type(self):
+        while len(self.value) == 1 and isinstance(self.value[0], BracketRegex):
             self.value = self.value[0].value
 
     def starts_with(self, text: str) -> Iterator[int]:
@@ -134,7 +134,7 @@ class StarRegex(NodeRegex):
         NodeRegex.__init__(self, value)
 
     def unpack(self):
-        while type(self.value) is type(self):
+        while isinstance(self.value, StarRegex):
             self.height += self.value.height
             self.value = self.value.value
 

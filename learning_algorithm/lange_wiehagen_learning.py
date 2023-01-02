@@ -1,19 +1,20 @@
 from __future__ import annotations
-from typing import Optional, List
+from typing import Optional
+from tqdm import tqdm
 
 from pattern.pattern import NEPattern, NEVariable
 
 
 def unite(pattern: NEPattern, word: str) -> NEPattern:
-    assert len(NEPattern) == len(word), "incorrect arguments"
+    assert len(pattern) == len(word), "incorrect arguments"
 
     def find_var(i: int, w: str, p: str | NEVariable) -> Optional[NEVariable]:
-        for j, prev_w, prev_p in enumerate(zip(word[:i], pattern.value[:i])):
+        for j, (prev_w, prev_p) in enumerate(zip(word[:i], pattern.value[:i])):
             if prev_w == w and prev_p == p:
                 return result[j]
 
     result = []
-    for i, w, p in enumerate(zip(word, pattern.value)):
+    for i, (w, p) in enumerate(zip(word, pattern.value)):
         if w == p:
             result.append(w)
         else:
@@ -22,11 +23,12 @@ def unite(pattern: NEPattern, word: str) -> NEPattern:
     return NEPattern(result)
 
 
-def LWA(words: List[str]) -> NEPattern:
-    pattern = NEPattern(words[0].split())
-    for word in words[1:]:
-        if len(pattern) > len(word):
-            pattern = NEPattern(word.split())
+def LWA(words: tqdm) -> NEPattern:
+    pattern = None
+    for word in words:
+        if pattern is None or len(pattern) > len(word):
+            pattern = NEPattern(list(word))
         elif len(pattern) == len(word):
             pattern = unite(pattern, word)
+        words.set_postfix({"pattern": pattern})
     return pattern

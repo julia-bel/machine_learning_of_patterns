@@ -10,7 +10,7 @@ class NEVariable(Variable):
 
     def substitute(self, value: str | List[str]):
         assert len(value), "length of the value must be > 0"
-        self.value = value.split() if type(value) is str else value
+        self.value = list(value) if isinstance(value, str) else value
 
 
 class NEPattern(Pattern):
@@ -22,7 +22,7 @@ class NEPattern(Pattern):
         vars = {}
         i = 1
         for value in self.value:
-            if type(value) is NEVariable:
+            if isinstance(value, NEVariable):
                 prev_i = vars.get(value)
                 if prev_i is None:
                     vars[value] = var_id + str(i)
@@ -50,7 +50,7 @@ class NEPattern(Pattern):
         for value in value_tail:
             if len(word_tail) == 0:
                 break
-            if type(value) is str:
+            if isinstance(value, str):
                 if value in word_tail:
                     word_tail.remove(value)
                 else:
@@ -68,13 +68,15 @@ class NEPattern(Pattern):
     def match(self, word: str | List[str]) -> bool:
         if not self.is_alphabet_compatible(word):
             return False
+        # print(f"match: {word}, pattern: {self.shape()}")
 
         def get_free_positions(var_i: int, start: int = 0) -> Iterator[int]:
             var = self.value[var_i]
             for i in range(start + 1, len(word) + 1):
-                if not self.is_alphabet_compatible(word[i:], var_i + 1):
-                    continue
                 var.substitute(word[start:i])
+                if not self.is_alphabet_compatible(word[i:], var_i + 1):
+                    var.free()
+                    continue
                 yield i
 
         def iter_positions(i: int) -> int:
@@ -95,20 +97,23 @@ class NEPattern(Pattern):
         stack = []
         i = 0
         while i < len(self.value):
+            # print(f"stack: {stack}")
             value = self.value[i]
             start = stack[-1][0] if stack else 0
-            if type(value) is str:
-                if word[start] == value:
+            if isinstance(value, str):
+                if start < len(word) and word[start] == value:
                     stack.append([start + 1, None])
                 else:
                     i = iter_positions(i - 1)
             elif value.is_free():
+                # print(f"FREE: {value}")
                 positions = get_free_positions(i, start)
                 try:
                     stack.append([next(positions), positions])
                 except StopIteration:
                     i = iter_positions(i - 1)
             else:
+                # print(f"FIXED: {value}")
                 if word[start:start + len(value)] == value.value:
                     stack.append([start + len(value), None])
                 else:

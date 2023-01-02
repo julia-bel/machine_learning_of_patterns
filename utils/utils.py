@@ -6,11 +6,3 @@ def key_generator() -> Iterator[str]:
     while True:
         yield str(i)
         i += 1
-
-
-def is_empty_generator(g: Iterator) -> bool:
-    for _ in g:
-        return True
-    return False
-
-

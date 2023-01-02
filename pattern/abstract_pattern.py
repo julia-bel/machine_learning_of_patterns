@@ -5,7 +5,7 @@ from typing import List, Optional
 
 class Variable(ABC):
     def __init__(self, value: Optional[str | List[str]] = None):
-        self.value = value.split() if type(value) is str else value
+        self.value = list(value) if isinstance(value, str) else value
 
     def is_free(self) -> bool:
         return self.value is None
@@ -27,13 +27,13 @@ class Variable(ABC):
 class Pattern(ABC):
     def __init__(self, value: List[str | Variable]):
         assert value, "empty pattern"
-        self.value = self.__unfold(value)
+        self.value = self._unfold(value)
 
-    def __unfold(self, value: List[str | Variable]):
+    def _unfold(self, value: List[str | Variable]):
         result = []
         for v in value:
-            if type(v) is str:
-                result += v.split()
+            if isinstance(v, str):
+                result += list(v)
             else:
                 result.append(v)
         return result
@@ -49,7 +49,7 @@ class Pattern(ABC):
 
     def free(self):
         for v in self.value:
-            if type(v) is not str:
+            if not isinstance(v, str):
                 v.free()
 
     @abstractmethod

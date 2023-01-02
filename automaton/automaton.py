@@ -20,7 +20,7 @@ class DFA(Automaton):
 
 
 class NFA(Automaton):
-    def __eps_closure(self, stack: Optional[Set[Node]] = None) -> Set[Node]:
+    def _eps_closure(self, stack: Optional[Set[Node]] = None) -> Set[Node]:
         stack = [self.start] if stack is None else list(stack)
         closure = set(stack)
         while stack:
@@ -32,7 +32,7 @@ class NFA(Automaton):
                         stack.append(child)
         return closure
 
-    def __rename_dfa(self, start: Set[Node], final: List[Set[Node]], new_nodes: List[Tuple[Any]]) -> DFA:
+    def _rename_dfa(self, start: Set[Node], final: List[Set[Node]], new_nodes: List[Tuple[Any]]) -> DFA:
 
         def get_new_node(multinode: Set[Node]) -> Optional[Node]:
             for prev_nodes, new_node in new_nodes:
@@ -59,7 +59,7 @@ class NFA(Automaton):
         return dfa
 
     def to_dfa(self) -> DFA:
-        start = self.__eps_closure()
+        start = self._eps_closure()
         final, new_nodes = [], []
         stack, used = [start], [start]
         while stack:
@@ -74,20 +74,20 @@ class NFA(Automaton):
                     if value == EPSILON:
                         continue
                     if value not in map_closure:
-                        map_closure[value] = self.__eps_closure(children)
+                        map_closure[value] = self._eps_closure(children)
                     else:
-                        map_closure[value] = map_closure[value].union(self.__eps_closure(children))
+                        map_closure[value] = map_closure[value].union(self._eps_closure(children))
             for value, closure in map_closure.items():
                 if closure not in used:
                     used.append(closure)
                     stack.append(closure)
             new_nodes.append((cur_node, Node(map_closure)))
         assert len(new_nodes) == len(used), f"{len(new_nodes), len(used)}"
-        return self.__rename_dfa(start, final, new_nodes)
+        return self._rename_dfa(start, final, new_nodes)
 
     def match(self, word: str) -> bool:
         cost = {}
-        closure = self.__eps_closure()
+        closure = self._eps_closure()
         word = list(word[::-1])
         while word and closure:
             char = word.pop()
@@ -102,7 +102,7 @@ class NFA(Automaton):
                                 continue
                         else:
                             cost[node] = node.height - 1
-                    new_closure = new_closure.union(self.__eps_closure(node.out[char]))
+                    new_closure = new_closure.union(self._eps_closure(node.out[char]))
             closure = new_closure
         for node in closure:
             if node in self.final:

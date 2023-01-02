@@ -35,7 +35,6 @@ class RegexGenerator:
             self.alphabet = list(string.ascii_lowercase)[:alphabet_size] + \
                             list(string.ascii_uppercase)[:alphabet_size]
         else:
-            print('HERE')
             self.alphabet = alphabet
 
     def change_seed(self, step: int = 1):
@@ -43,16 +42,16 @@ class RegexGenerator:
         random.seed(self.seed)
 
     def generate_regex(self) -> str:
-        self.change_seed()
+        # self.change_seed()
         self.cur_nesting = 0
         self.cur_regex = ""
         self.cur_regex_length = self.regex_length
         self.cur_star_num = self.star_num
-        self.__generate_regex()
+        self._generate_regex()
         return self.cur_regex
 
     # <regex> ::= <n-alt-regex> <alt> <regex> | <conc-regex>
-    def __generate_regex(self):
+    def _generate_regex(self):
         if self.cur_regex_length < 1:
             return
         if random.randint(0, 1):
@@ -62,7 +61,7 @@ class RegexGenerator:
                 return
             if self.cur_regex_length != 1:
                 self.cur_regex += "|"
-                self.__generate_regex()
+                self._generate_regex()
         else:
             self.generate_conc_regex()
 
@@ -109,7 +108,7 @@ class RegexGenerator:
             else:
                 v = 1
             self.cur_regex += "("
-            self.__generate_regex()
+            self._generate_regex()
             self.cur_regex += ")"
             if not v:
                 self.cur_regex += "*"
