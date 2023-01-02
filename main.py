@@ -1,6 +1,6 @@
+from argparse import ArgumentParser
 from typing import List, Dict, Optional
 from tqdm import tqdm
-from sys import argv
 
 from learning_algorithm.angulin_learning import angulin_algorithm
 from learning_algorithm.lange_wiehagen_learning import LWA
@@ -39,6 +39,19 @@ def learn(words: List[str], optimize: bool = False) -> Optional[NEPattern]:
 
 
 if __name__ == "__main__":
-    with open(argv[1], "r") as file:
+    parser = ArgumentParser(description="Patterns learning")
+    parser.add_argument(
+        "-d", "--dataset_path",
+        default="experiments/dataset.csv",
+        help="Path to the file with words for learning.",
+    )
+    parser.add_argument(
+        "-o", "--optimize", action="store_true",
+        help="Whether to use optimization of Angulin's algorithm.",
+    )
+    args = parser.parse_args()
+
+    with open(args.dataset_path, mode="r", encoding="utf-8") as file:
         dataset = [data for data in file.read().split("\n") if data]
-    print(f"Result: {learn(dataset, optimize=True)}")
+
+    print(f"Result: {learn(dataset, optimize=args.optimize)}")

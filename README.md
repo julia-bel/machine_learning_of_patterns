@@ -1,11 +1,5 @@
 # Machine learning of patterns
 
-## Installing
-```
-git clone https://github.com/julia-bel/machine_learning_of_patterns
-pip install -r requirements.txt
-```
-
 > ### Basic algorithms
 > - Lange and Wiehagen's pattern language learning algorithm: https://www.researchgate.net/publication/2464047.
 > - Angulin's pattern language learning algorithm: https://www.sciencedirect.com/science/article/pii/0022000080900410.
@@ -20,14 +14,22 @@ pip install -r requirements.txt
     <img src="assets/algorithm.svg" width="640" height="360" alt="Learning algorithm"/>
 </p>
 
+## Installing
+```
+git clone https://github.com/julia-bel/machine_learning_of_patterns
+pip install -r requirements.txt
+```
+
 ## Learning
 ```
-python main.py {dataset_path}
+python main.py [-h] -d DATASET_PATH [-o] 
 ```
-```dataset_path``` - path to a file with words for learning, separated by a line break character (default ```experiments/dataset.csv```).
+
+```-d, --dataset_path``` - Path to the file with words for learning (default ```experiments/dataset.csv```).          
+```-o, --optimize``` - Whether to use optimization of Angulin's algorithm.
 
 
-## Files structure
+## File structure
 ```
 .
 |-- README.md
@@ -58,5 +60,4 @@ python main.py {dataset_path}
 |   `-- *.gv, *.gv.png files for DFA, NFA and regex structure visualization
 |-- requirements.txt
 `-- main.py - script for patterns learning
-
 ```
