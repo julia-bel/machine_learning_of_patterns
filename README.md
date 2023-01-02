@@ -11,7 +11,7 @@ pip install -r requirements.txt
 > - Angulin's pattern language learning algorithm: https://www.sciencedirect.com/science/article/pii/0022000080900410.
 
 ## Algorithm
-1) Let $L = \left \lbrace l_1, ..., l_k  \right \}$ be the ascending set of unique lengths of all dataset words.
+1) Let $L = \{ l_1, ..., l_k \}$ be the ascending set of unique lengths of all dataset words.
 2) Sequentially apply the Lange and Wiehagen's algorithm to the set of words of length $l_1, ..., l_k$.
 3) If the pattern inclusion condition isn't satisfied, then apply the Angulin's algorithm to these patterns.
 4) The result pattern corresponds to the minimum length words.
