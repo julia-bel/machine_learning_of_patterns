@@ -25,8 +25,8 @@ pip install -r requirements.txt
 python main.py [-h] -d DATASET_PATH [-o] 
 ```
 
-```-d, --dataset_path``` - Path to the file with words for learning (default ```experiments/dataset.csv```).          
-```-o, --optimize``` - Whether to use optimization of Angulin's algorithm.
+```-d, --dataset_path``` - path to the file with words for learning (default ```experiments/dataset.csv```).          
+```-o, --optimize``` - whether to use optimization of Angulin's algorithm.
 
 
 ## File structure
