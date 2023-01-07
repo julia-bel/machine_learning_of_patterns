@@ -1,7 +1,7 @@
 from typing import List
 
 from regex.const import L_PAR, R_PAR, KLEENE_STAR, ALTERNATIVE
-from regex.regex import BaseRegex, StarRegex, Regex, BracketRegex, AlternativeRegex
+from regex.regex import BaseRegex, StarRegex, Regex, ConcatenationRegex, AlternativeRegex
 
 
 class RegexParser:
@@ -44,15 +44,15 @@ class RegexParser:
                 if alternative:
                     assert len(parsed) > alternative, "invalid alternative expression"
                     if len(parsed) != alternative + 1:
-                        parsed = parsed[:alternative] + [BracketRegex(parsed[alternative:])]
+                        parsed = parsed[:alternative] + [ConcatenationRegex(parsed[alternative:])]
                     return AlternativeRegex(parsed)
-                return BracketRegex(parsed)
+                return ConcatenationRegex(parsed)
             elif char == ALTERNATIVE:
                 add2parsed(curr_regex)
                 curr_regex = ""
                 assert len(parsed) > alternative, "invalid alternative expression"
                 if len(parsed) != alternative + 1:
-                    parsed = parsed[:alternative] + [BracketRegex(parsed[alternative:])]
+                    parsed = parsed[:alternative] + [ConcatenationRegex(parsed[alternative:])]
                 alternative += 1
             elif char == KLEENE_STAR:
                 if curr_regex:
@@ -69,6 +69,6 @@ class RegexParser:
         if alternative:
             assert len(parsed) > alternative, "invalid alternative expression"
             if len(parsed) != alternative + 1:
-                parsed = parsed[:alternative] + [BracketRegex(parsed[alternative:])]
+                parsed = parsed[:alternative] + [ConcatenationRegex(parsed[alternative:])]
             return AlternativeRegex(parsed)
-        return parsed[0] if len(parsed) == 1 else BracketRegex(parsed)
+        return parsed[0] if len(parsed) == 1 else ConcatenationRegex(parsed)

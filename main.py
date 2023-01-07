@@ -42,7 +42,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="Patterns learning")
     parser.add_argument(
         "-d", "--dataset_path",
-        default="experiments/dataset.csv",
+        default="datasets/dataset.csv",
         help="Path to the file with words for learning.",
     )
     parser.add_argument(

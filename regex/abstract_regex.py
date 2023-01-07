@@ -11,12 +11,19 @@ class Regex(ABC):
         assert value, "empty regular expression"
         self.value = value
 
+    def __len__(self) -> int:
+        return len(self.value)
+
     def match(self, word: str) -> bool:
         word_len = len(word)
         for final in self.starts_with(word):
             if final == word_len:
                 return True
         return False
+
+    @abstractmethod
+    def __str__(self) -> str:
+        pass
 
     @abstractmethod
     def starts_with(self, text: str) -> Iterator[int]:

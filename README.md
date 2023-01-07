@@ -25,7 +25,7 @@ pip install -r requirements.txt
 python main.py [-h] -d DATASET_PATH [-o] 
 ```
 
-```-d, --dataset_path``` - path to the file with words for learning (default ```experiments/dataset.csv```).          
+```-d, --dataset_path``` - path to the file with words for learning (default ```datasets/dataset.csv```).          
 ```-o, --optimize``` - whether to use optimization of Angulin's algorithm.
 
 
@@ -38,6 +38,8 @@ python main.py [-h] -d DATASET_PATH [-o]
 |-- automaton
 |   |-- abstract_automaton.py - superclass for NFA and DFA
 |   `-- automaton.py - implementation of NFA and DFA for regex matching
+|-- datasets
+|   `-- files with datasets
 |-- experiments 
 |   |-- matching_time.ipynb - notebook with time measurements
 |   |-- two_steps_generation.ipynb - notebook for dataset creating

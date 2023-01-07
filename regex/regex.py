@@ -11,6 +11,9 @@ from utils.utils import key_generator
 
 
 class BaseRegex(Regex):
+    def __str__(self) -> str:
+        return self.value
+
     def starts_with(self, text: str) -> Iterator[int]:
         if text.startswith(self.value):
             yield len(self.value)
@@ -44,13 +47,25 @@ class BaseRegex(Regex):
         return graph
 
 
-class BracketRegex(NodeRegex):
+class ConcatenationRegex(NodeRegex):
     def __init__(self, value: List[Regex]):
         super().__init__(value)
         self.unpack()
 
+    def __str__(self) -> str:
+        if self.flat_len() == 1:
+            return str(self.value[0])
+        return "".join([str(v) if len(v) == 1 or not isinstance(v, AlternativeRegex)
+                        else f"({v})" for v in self.value])
+
+    def __len__(self) -> int:
+        return sum([len(v) for v in self.value])
+
+    def flat_len(self) -> int:
+        return len(self.value)
+
     def unpack(self):
-        while len(self.value) == 1 and isinstance(self.value[0], BracketRegex):
+        while self.flat_len() == 1 and isinstance(self.value[0], ConcatenationRegex):
             self.value = self.value[0].value
 
     def starts_with(self, text: str) -> Iterator[int]:
@@ -87,6 +102,9 @@ class BracketRegex(NodeRegex):
 class AlternativeRegex(NodeRegex):
     def __init__(self, value: List[Regex]):
         super().__init__(value)
+
+    def __str__(self) -> str:
+        return "|".join([str(v) for v in self.value])
 
     def unpack(self):
         pass
@@ -133,10 +151,14 @@ class StarRegex(NodeRegex):
         self.height = height
         NodeRegex.__init__(self, value)
 
+    def __len__(self):
+        return 1
+
+    def __str__(self) -> str:
+        return f"({self.value})*" if len(self.value) > 1 else f"{self.value}*"
+
     def unpack(self):
-        while isinstance(self.value, StarRegex):
-            self.height += self.value.height
-            self.value = self.value.value
+        pass
 
     def starts_with(self, text: str) -> Iterator[int]:
         used = set()
