@@ -107,7 +107,7 @@ def find_min_pattern(patterns: List[NEPattern]) -> Optional[NEPattern]:
             return p1
 
 
-def angulin_algorithm(words: List[str | List[str]], optimize: bool = False) -> Optional[NEPattern]:
+def angluin_algorithm(words: List[str | List[str]], optimize: bool = False) -> Optional[NEPattern]:
     min_length = min([len(word) for word in words])
     patterns = optimal_generate_rec_patterns(words, min_length) \
         if optimize else generate_rec_patterns(words, min_length)

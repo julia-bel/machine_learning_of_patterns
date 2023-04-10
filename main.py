@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from typing import List, Dict, Optional
 from tqdm import tqdm
 
-from learning_algorithm.angulin_learning import angulin_algorithm
+from learning_algorithm.angluin_learning import angluin_algorithm
 from learning_algorithm.lange_wiehagen_learning import LWA
 from pattern.pattern import NEPattern
 
@@ -23,7 +23,7 @@ def learn(words: List[str], optimize: bool = False) -> Optional[NEPattern]:
         nonlocal patterns
         new_patterns = [pattern]
         while len(patterns) and not patterns[-1].include(pattern):
-            pattern = angulin_algorithm(
+            pattern = angluin_algorithm(
                 [patterns.pop().shape("x"), pattern.shape("y")],
                 optimize=optimize)
             new_patterns.append(pattern)
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-o", "--optimize", action="store_true",
-        help="Whether to use optimization of Angulin's algorithm.",
+        help="Whether to use optimization of Angluin's algorithm.",
     )
     args = parser.parse_args()
 

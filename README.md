@@ -2,12 +2,12 @@
 
 > ### Basic algorithms
 > - Lange and Wiehagen's pattern language learning algorithm: https://www.researchgate.net/publication/2464047.
-> - Angulin's pattern language learning algorithm: https://www.sciencedirect.com/science/article/pii/0022000080900410.
+> - Angluin's pattern language learning algorithm: https://www.sciencedirect.com/science/article/pii/0022000080900410.
 
 ## Algorithm
 1) Let $L = \{ l_1, ..., l_k \}$ be the ascending set of unique lengths of all dataset words.
 2) Sequentially apply the Lange and Wiehagen's algorithm to the set of words of length $l_1, ..., l_k$.
-3) If the pattern inclusion condition isn't satisfied, then apply the Angulin's algorithm to these patterns.
+3) If the pattern inclusion condition isn't satisfied, then apply the Angluin's algorithm to these patterns.
 4) The result pattern corresponds to the minimum length words.
 
 <p align="center">
@@ -26,7 +26,7 @@ python main.py [-h] -d DATASET_PATH [-o]
 ```
 
 ```-d, --dataset_path``` - path to the file with words for learning (default ```datasets/dataset.csv```).          
-```-o, --optimize``` - whether to use optimization of Angulin's algorithm.
+```-o, --optimize``` - whether to use optimization of Angluin's algorithm.
 
 
 ## File structure
@@ -45,7 +45,7 @@ python main.py [-h] -d DATASET_PATH [-o]
 |   |-- two_steps_generation.ipynb - notebook for dataset creating
 |   `-- dataset.csv - dataset regexes
 |-- learning_algorithm
-|   |-- angulin_learning.py - implementation of Angulin's algorithm
+|   |-- angluin_learning.py - implementation of Angluin's algorithm
 |   `-- lange_weihagen_learning.py - implementation of LWA
 |-- pattern
 |   |-- abstract_pattern.py - superclass for non-erasing pattern
