@@ -1,8 +1,8 @@
 # Machine learning of patterns
 
 > ### Basic algorithms
-> - Lange and Wiehagen's pattern language learning algorithm: https://www.researchgate.net/publication/2464047.
-> - Angluin's pattern language learning algorithm: https://www.sciencedirect.com/science/article/pii/0022000080900410.
+> - [Lange and Wiehagen's pattern language learning algorithm](https://www.researchgate.net/publication/2464047).
+> - [Angluin's pattern language learning algorithm](https://www.sciencedirect.com/science/article/pii/0022000080900410).
 
 ## Algorithm
 1) Let $L = \{ l_1, ..., l_k \}$ be the ascending set of unique lengths of all dataset words.
