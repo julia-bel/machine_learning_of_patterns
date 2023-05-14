@@ -11,7 +11,7 @@
 4) The result pattern corresponds to the minimum length words.
 
 <p align="center">
-    <img src="assets/algorithm.svg" width="640" height="360" alt="Learning algorithm"/>
+    <img src="assets/algorithm.svg" width="896" height="504" alt="Learning algorithm"/>
 </p>
 
 ## Installing
